@@ -32,15 +32,19 @@ const QuestionForm: React.FC<DialogProp> = ({ trigger }) => {
     link: "",
   })
 
+  console.log(quest)
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     mutation.mutate([quest])
     setQuest({ question: "", difficulty: "", tags: "", link: "" })
   }
 
+  const URL: string = import.meta.env.VITE_API_URL
+
   const mutation = useMutation<object[], Error, object[]>({
     mutationFn: (quests: object[]) => {
-      return axios.post("http://localhost:8000/add-questions", {
+      return axios.post(`${URL}/add-questions`, {
         questions: quests,
       })
     },
@@ -90,9 +94,9 @@ const QuestionForm: React.FC<DialogProp> = ({ trigger }) => {
                 <SelectValue placeholder="Select difficulty" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Easy">easy</SelectItem>
-                <SelectItem value="Medium">medium</SelectItem>
-                <SelectItem value="Hard">hard</SelectItem>
+                <SelectItem value="easy">Easy</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="hard">Hard</SelectItem>
               </SelectContent>
             </Select>
           </div>
