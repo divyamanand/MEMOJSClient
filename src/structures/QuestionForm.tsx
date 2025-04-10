@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { ReactElement, useState } from "react"
 
@@ -32,13 +32,13 @@ const QuestionForm: React.FC<DialogProp> = ({ trigger }) => {
     link: "",
   })
 
-  console.log(quest)
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     mutation.mutate([quest])
     setQuest({ question: "", difficulty: "", tags: "", link: "" })
   }
+
+  const queryClient = useQueryClient()
 
   const URL: string = import.meta.env.VITE_API_URL
 
@@ -48,6 +48,10 @@ const QuestionForm: React.FC<DialogProp> = ({ trigger }) => {
         questions: quests,
       })
     },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["questions"] })
+    }
   })
 
   return (
