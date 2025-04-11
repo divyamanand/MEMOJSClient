@@ -5,16 +5,22 @@ import QuestionForm from './structures/QuestionForm'
 import ListQuestions from './queries/ListQuestions'
 import FormTrigger from "./structures/FormTrigger"
 import { Separator } from "@/components/ui/separator"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription
+} from "@/components/ui/card"
 import { Button } from './components/ui/button'
 import { RefreshCcw, Flame } from "lucide-react"
 import { useQueryClient } from '@tanstack/react-query'
 
-// Import resizable from shadcn/ui
+// Resizable
 import {
   ResizablePanelGroup,
   ResizablePanel,
-  ResizableHandle,
+  ResizableHandle
 } from "@/components/ui/resizable"
 
 function App() {
@@ -23,7 +29,7 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="min-h-screen bg-background text-foreground px-4 sm:px-8 py-6 overflow-hidden">
-
+        
         {/* Top Bar */}
         <div className="flex justify-between items-center mb-4">
           <div>
@@ -46,10 +52,9 @@ function App() {
         <Separator className="my-4" />
 
         {/* Resizable Layout */}
-        <ResizablePanelGroup direction="horizontal" className="h-[86vh] gap-4">
-          {/* Revisions Panel */}
+        <ResizablePanelGroup direction="horizontal" className="gap-4">
           <ResizablePanel defaultSize={50} minSize={30}>
-            <Card className="h-full">
+            <Card className="h-[86vh]">
               <CardHeader className="flex flex-row justify-between items-center">
                 <div>
                   <CardTitle>Revisions</CardTitle>
@@ -59,7 +64,7 @@ function App() {
                   <RefreshCcw className="h-5 w-5 cursor-pointer text-muted-foreground hover:text-foreground transition" />
                 </button>
               </CardHeader>
-              <CardContent className="overflow-y-auto custom-scroll h-full">
+              <CardContent className="h-[calc(86vh-88px)] overflow-y-auto custom-scroll">
                 <ListRevisions />
               </CardContent>
             </Card>
@@ -67,9 +72,8 @@ function App() {
 
           <ResizableHandle withHandle />
 
-          {/* Questions Panel */}
           <ResizablePanel defaultSize={50} minSize={30}>
-            <Card className="h-full">
+            <Card className="h-[86vh]">
               <CardHeader className="flex flex-row justify-between items-center">
                 <div>
                   <CardTitle>Questions</CardTitle>
@@ -82,7 +86,7 @@ function App() {
                   <QuestionForm trigger={<FormTrigger />} />
                 </div>
               </CardHeader>
-              <CardContent className="overflow-y-auto custom-scroll h-full">
+              <CardContent className="h-[calc(86vh-88px)] overflow-y-auto custom-scroll">
                 <ListQuestions />
               </CardContent>
             </Card>
