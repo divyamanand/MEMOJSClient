@@ -9,9 +9,13 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from './components/ui/button'
 import { RefreshCcw } from "lucide-react"
 import { Flame } from "lucide-react"
+import { useQueryClient } from '@tanstack/react-query'
 
 
 function App() {
+
+  const queryClient = useQueryClient()
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="min-h-screen bg-background text-foreground px-4 sm:px-8 py-6 overflow-hidden">
@@ -47,7 +51,9 @@ function App() {
               <CardTitle>Revisions</CardTitle>
               <CardDescription>Latest attempts and history</CardDescription>
             </div>
-            <RefreshCcw className="h-5 w-5 cursor-pointer text-muted-foreground hover:text-foreground transition" />
+            <button onClick={() => queryClient.invalidateQueries({ queryKey: ["revisions"] })}>
+              <RefreshCcw className="h-5 w-5 cursor-pointer text-muted-foreground hover:text-foreground transition" />
+            </button>
           </CardHeader>
 
             <CardContent className="overflow-y-auto custom-scroll h-full">
@@ -63,7 +69,9 @@ function App() {
               <CardDescription>Submitted questions list</CardDescription>
             </div>
             <div className="flex items-center space-x-2">
+              <button onClick={() => queryClient.invalidateQueries({ queryKey: ["questions"] })}>
               <RefreshCcw className="h-5 w-5 cursor-pointer text-muted-foreground hover:text-foreground transition" />
+              </button>
               <QuestionForm trigger={<FormTrigger />} />
             </div>
           </CardHeader>
