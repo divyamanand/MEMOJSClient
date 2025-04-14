@@ -6,37 +6,41 @@ const ListRevisions = () => {
   const queryClient = useQueryClient();
   const URL: string = import.meta.env.VITE_API_URL;
 
-  const mutation = useMutation<number[], Error, number[]>({
-    mutationFn: (questionIDs: number[]) => {
-      return axios.post(`${URL}/mark-revisions`, { ids: questionIDs });
-    },
-    onMutate: async (questionIDs) => {
-      await queryClient.cancelQueries({ queryKey: ["revisions"] });
+  const mutation = useMutation<
+  number[], // Data type returned from mutationFn (response)
+  Error,    // Error type
+  number[], // Variables passed to mutationFn (question IDs)
+  { previousData: any } // Context passed from onMutate to onError/onSettled
+>({
+  mutationFn: (questionIDs: number[]) => {
+    return axios.post(`${URL}/mark-revisions`, { ids: questionIDs });
+  },
+  onMutate: async (questionIDs) => {
+    await queryClient.cancelQueries({ queryKey: ["revisions"] });
 
-      const previousData = queryClient.getQueryData<object>(["revisions"]);
+    const previousData = queryClient.getQueryData<any>(["revisions"]);
 
-      // Optimistically update completed state
-      queryClient.setQueryData(["revisions"], (old: any) => {
-        return {
-          ...old,
-          response: old.response.map((q: any) =>
-            questionIDs.includes(q.revision_id)
-              ? { ...q, completed: true }
-              : q
-          ),
-        };
-      });
+    queryClient.setQueryData(["revisions"], (old: any) => {
+      return {
+        ...old,
+        response: old.response.map((q: any) =>
+          questionIDs.includes(q.revision_id)
+            ? { ...q, completed: true }
+            : q
+        ),
+      };
+    });
 
-      return { previousData };
-    },
-    onError: (_err, _variables, context) => {
-      // Rollback if failed
-      queryClient.setQueryData(["revisions"], context?.previousData);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ["revisions"] });
-    },
-  });
+    return { previousData };
+  },
+  onError: (_err, _variables, context) => {
+    queryClient.setQueryData(["revisions"], context?.previousData);
+  },
+  onSettled: () => {
+    queryClient.invalidateQueries({ queryKey: ["revisions"] });
+  },
+});
+
 
   const { isPending, error, data } = useQuery({
     queryKey: ["revisions"],
