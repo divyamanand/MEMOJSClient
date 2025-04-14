@@ -4,12 +4,36 @@ import Revision from "../structures/Revision";
 
 const ListRevisions = () => {
   const queryClient = useQueryClient();
-  const URL: string = import.meta.env.VITE_API_URL
+  const URL: string = import.meta.env.VITE_API_URL;
+
   const mutation = useMutation<number[], Error, number[]>({
-    mutationFn: (markRevisions: number[]) => {
-      return axios.post(`${URL}/mark-revisions`, { ids: markRevisions });
+    mutationFn: (questionIDs: number[]) => {
+      return axios.post(`${URL}/mark-revisions`, { ids: questionIDs });
     },
-    onSuccess: () => {
+    onMutate: async (questionIDs) => {
+      await queryClient.cancelQueries({ queryKey: ["revisions"] });
+
+      const previousData = queryClient.getQueryData<object>(["revisions"]);
+
+      // Optimistically update completed state
+      queryClient.setQueryData(["revisions"], (old: any) => {
+        return {
+          ...old,
+          response: old.response.map((q: any) =>
+            questionIDs.includes(q.revision_id)
+              ? { ...q, completed: true }
+              : q
+          ),
+        };
+      });
+
+      return { previousData };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback if failed
+      queryClient.setQueryData(["revisions"], context?.previousData);
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["revisions"] });
     },
   });
@@ -29,7 +53,6 @@ const ListRevisions = () => {
     <div className="px-6 py-4">
       <h3 className="text-xl font-semibold mb-4">{data?.response?.length} Questions</h3>
 
-      {/* Pinterest-style masonry layout */}
       <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
         {data.response.map((ques: {
           revision_id: number;
