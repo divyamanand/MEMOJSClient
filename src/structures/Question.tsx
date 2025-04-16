@@ -39,9 +39,6 @@ const Question: React.FC<Props> = ({
             <Badge variant="outline" className="rounded-full bg-muted/60 px-2 py-[2px]">
               {questionTags}
             </Badge>
-            <Badge variant="secondary" className="rounded-full px-2 py-[2px]">
-              {lastRevision}
-            </Badge>
 
             {questionLink && (
               <a
