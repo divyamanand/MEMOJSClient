@@ -2,9 +2,7 @@ import { ModeToggle } from './components/mode-toggle'
 import { ThemeProvider } from "@/components/theme-provider"
 import { Button } from './components/ui/button'
 import { Flame } from "lucide-react"
-
 import FinalRevisionCards from "@/structures/cards/FinalRevisoinCards"
-import FinalQuestionCards from "@/structures/cards/FinalQuestionCards"
 
 function App() {
   return (
