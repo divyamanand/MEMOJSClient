@@ -57,7 +57,7 @@ const ListRevisions = () => {
     <div className="px-6 py-4">
       <h3 className="text-xl font-semibold mb-4">{data?.response?.length} Questions</h3>
 
-      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+      <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-9 gap-4 space-y-4">
         {data.response.map((ques: {
           revision_id: number;
           question: string;

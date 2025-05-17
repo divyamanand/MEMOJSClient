@@ -1,13 +1,7 @@
 import { ModeToggle } from './components/mode-toggle'
 import { ThemeProvider } from "@/components/theme-provider"
-import { Separator } from "@/components/ui/separator"
 import { Button } from './components/ui/button'
 import { Flame } from "lucide-react"
-import {
-  ResizablePanelGroup,
-  ResizablePanel,
-  ResizableHandle
-} from "@/components/ui/resizable"
 
 import FinalRevisionCards from "@/structures/cards/FinalRevisoinCards"
 import FinalQuestionCards from "@/structures/cards/FinalQuestionCards"
@@ -34,21 +28,7 @@ function App() {
             <ModeToggle />
           </div>
         </div>
-
-        <Separator className="my-4" />
-
-        {/* Resizable Layout */}
-        <ResizablePanelGroup direction="horizontal" className="gap-4">
-          <ResizablePanel defaultSize={50} minSize={30}>
             <FinalRevisionCards />
-          </ResizablePanel>
-
-          <ResizableHandle withHandle />
-
-          <ResizablePanel defaultSize={50} minSize={30}>
-            <FinalQuestionCards />
-          </ResizablePanel>
-        </ResizablePanelGroup>
       </div>
     </ThemeProvider>
   )
