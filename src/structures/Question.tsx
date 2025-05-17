@@ -6,7 +6,6 @@ import React from "react";
 export interface Props {
   questionName: string;
   questionTags: string;
-  lastRevision: string;
   questionLink: string;
   onDelete?: () => void;
   onEdit?: () => void;
@@ -15,7 +14,6 @@ export interface Props {
 const Question: React.FC<Props> = ({
   questionName = "Your Question Name",
   questionTags = "GFG",
-  lastRevision = "04 Apr 2025",
   questionLink = "",
   onDelete,
   onEdit,
