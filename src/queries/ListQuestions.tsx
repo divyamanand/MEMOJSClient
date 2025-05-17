@@ -26,14 +26,12 @@ const ListQuestions = () => {
           id: number;
           question: string;
           tags: string;
-          last_revised: string;
           link: string;
         }) => (
           <div key={ques.id} className="break-inside-avoid">
             <Question
               questionName={ques.question}
               questionTags={ques.tags}
-              lastRevision={ques.last_revised || "None"}
               questionLink={ques.link}
             />
           </div>
